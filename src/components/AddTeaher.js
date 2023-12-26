@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddTeacher = ({ addTeacher }) => {
   const [id, setId] = useState(0);
@@ -6,9 +7,12 @@ const AddTeacher = ({ addTeacher }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTeacher(id, name, email, password );
+    addTeacher(id, name, email, password);
+    navigate("/");
   };
 
   return (
@@ -33,7 +37,7 @@ const AddTeacher = ({ addTeacher }) => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button>Add Teacher</button>
+      <button type="submit">Add Teacher</button>
     </form>
   );
 };
