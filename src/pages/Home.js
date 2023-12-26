@@ -1,13 +1,20 @@
 import AdminPage from "./AdminPage";
+import StudentPage from "./StudentPage";
+import TeacherPage from "./TeacherPage";
 
 const Home = ({ user, onLogout }) => {
+
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+
   return (
     <div>
       <h1>Home</h1>
-      {user.is_admin ? (
-        <AdminPage />
+      {currentUser.role === "admin" ? (
+        <AdminPage user={currentUser} />
+      ) : user.role === "teacher" ? (
+        <TeacherPage user={currentUser} />
       ) : (
-        <p>Bienvenido {user.name}</p>
+        <StudentPage />
       )}
       <button onClick={onLogout}>Logout</button>
     </div>
