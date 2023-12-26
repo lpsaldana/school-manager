@@ -11,6 +11,8 @@ import LoginForm from "./components/loginForm";
 import Home from "./pages/Home";
 import AddTeacher from "./components/AddTeaher";
 import AddStudent from "./components/AddStudent";
+import AddSubject from "./components/addSubject";
+import AddClassroom from "./components/AddClassroom";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -31,6 +33,7 @@ function App() {
         { headers: headers }
       );
       setUser(response.data);
+      localStorage.setItem("user", JSON.stringify(response.data));
     } catch (error) {
       console.log(error);
     }
@@ -38,12 +41,12 @@ function App() {
 
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem("user");
   };
 
   const handleAddTeacher = async (id, name, email, password) => {
     try {
-      console.log(id, name, email, password);
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3001/teacher",
         {
           id: id,
@@ -53,7 +56,6 @@ function App() {
         },
         { headers: headers }
       );
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +63,7 @@ function App() {
 
   const handleAddStudent = async (id, classroom_id, name, email, password) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3001/student",
         {
           id: id,
@@ -72,12 +74,45 @@ function App() {
         },
         { headers: headers }
       );
-      console.log(response.data);
     }
     catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  const handleAddSubject = async (id, name, classroom_id) => {
+    try {
+      await axios.post(
+        "http://localhost:3001/subject",
+        {
+          id: id,
+          name: name,
+          classroom_id: classroom_id,
+        },
+        { headers: headers }
+      );
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleAddClassroom = async (id, name, teacher_id) => {
+    try {
+      await axios.post(
+        "http://localhost:3001/classroom",
+        {
+          id: id,
+          name: name,
+          teacher_id: teacher_id,
+        },
+        { headers: headers }
+      );
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Router>
@@ -86,7 +121,7 @@ function App() {
           <Route
             path="/"
             element={
-              user ? (
+              localStorage.getItem("user") ? (
                 <Home user={user} onLogout={handleLogout} />
               ) : (
                 <Navigate to="/login" />
@@ -96,7 +131,7 @@ function App() {
           <Route
             path="/login"
             element = {
-              user ? (
+              localStorage.getItem("user") ? (
                 <Navigate to="/" />
               ) : (
                 <LoginForm onLogin={handleLogin} />
@@ -106,7 +141,7 @@ function App() {
           <Route 
             path="/add-teacher"
             element={
-              user ? (
+              localStorage.getItem("user") ? (
                 <AddTeacher addTeacher={handleAddTeacher} />
               ) : (
                 <Navigate to="/login" />
@@ -116,8 +151,28 @@ function App() {
           <Route
             path="/add-student"
             element={
-              user ? (
+              localStorage.getItem("user") ? (
                 <AddStudent addStudent={handleAddStudent} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/add-subject"
+            element={
+              localStorage.getItem("user") ? (
+                <AddSubject addSubject={handleAddSubject} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/add-classroom"
+            element={
+              localStorage.getItem("user") ? (
+                <AddClassroom addClassroom={handleAddClassroom} />
               ) : (
                 <Navigate to="/login" />
               )
