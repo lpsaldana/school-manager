@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+table, th, td {
+  border: 1px solid;
+}
+
+table {
+  width: 100%;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
