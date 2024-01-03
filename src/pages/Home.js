@@ -11,10 +11,10 @@ const Home = ({ user, onLogout }) => {
       <h1>Home</h1>
       {currentUser.role === "admin" ? (
         <AdminPage user={currentUser} />
-      ) : user.role === "teacher" ? (
+      ) : currentUser.role === "teacher" ? (
         <TeacherPage user={currentUser} />
       ) : (
-        <StudentPage />
+        <StudentPage user={currentUser} />
       )}
       <button onClick={onLogout}>Logout</button>
     </div>
